@@ -18,8 +18,10 @@ public class EstoqueDAO {
     }
     
     public ResultSet consultar(Roupa roupa) throws SQLException{
-        String sql = "select * from estoque where marca = ?";
+        String sql = "select * from estoque where marca = ? and descricao = ?";
         PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1, roupa.getMarca());
+        statement.setString(2, roupa.getDescricao());
         statement.execute();
         ResultSet resul = statement.getResultSet();
         return resul;
@@ -34,12 +36,12 @@ public class EstoqueDAO {
         conn.close();
     }
     
-    public void excluir(Roupa roupa) throws SQLException{
-        String sql = "delete from estoque where marca = ? descricao = ?";
+    public void excluir(String marca, String desc) throws SQLException{
+        String sql = "delete from estoque where marca = ? and descricao = ?";
         
         PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setString(1, roupa.getMarca());
-        statement.setString(1, roupa.getDescricao());
+        statement.setString(1, marca);
+        statement.setString(2, desc);
         statement.execute();
         conn.close();
     }
