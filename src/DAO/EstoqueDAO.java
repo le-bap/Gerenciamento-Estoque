@@ -36,13 +36,13 @@ public class EstoqueDAO {
         conn.close();
     }
     
-    public void excluir(String marca, String desc) throws SQLException{
-        String sql = "delete from estoque where marca = ? and descricao = ?";
-        
-        PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setString(1, marca);
-        statement.setString(2, desc);
-        statement.execute();
-        conn.close();
+    public boolean excluir(String marca, String desc) throws SQLException{
+        String sql = "delete from estoque where marca = ? AND descricao = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, marca);
+            stmt.setString(2, desc);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        }
     }
 }

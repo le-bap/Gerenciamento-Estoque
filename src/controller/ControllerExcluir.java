@@ -19,27 +19,27 @@ public class ControllerExcluir {
         this.view = view;
     }    
     
-    public void remover(){
+    public void remover() {
         String marca = view.getTxtMarca().getText();
         String desc = view.getTxtDescricao().getText();
-        int option = JOptionPane.showConfirmDialog(view, 
-                "realmente quer excluir esta peça?");
-        
-        
-        
-        if(option != 1){
+        int option = JOptionPane.showConfirmDialog(view, "Realmente quer excluir esta peça?");
+
+        if (option == JOptionPane.YES_OPTION) {
             Conexao conexao = new Conexao();
-            
-            try{
+            try {
                 Connection conn = conexao.getConnection();
                 EstoqueDAO dao = new EstoqueDAO(conn);
-                dao.excluir(marca, desc);
-                JOptionPane.showMessageDialog(view, "excluido com sucesso");
+                boolean sucesso = dao.excluir(marca, desc);
+                if (sucesso) {
+                    JOptionPane.showMessageDialog(view, "Excluído com sucesso");
+                    view.getTxtMarca().setText("");
+                    view.getTxtDescricao().setText("");
+                } else {
+                    JOptionPane.showMessageDialog(view, "Peça não encontrada");
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(view, "Erro ao excluir: " + e.getMessage());
             }
-            catch(SQLException e){
-                JOptionPane.showMessageDialog(view, e);
-
-            }
-        }   
+        }
     }
 }
