@@ -52,34 +52,7 @@ public class ControllerPesquisar {
                     view.getTxtDescricao().getText());
             StringBuilder texto = new StringBuilder(); 
             if (!res.isBeforeFirst()) { 
-                JOptionPane.showMessageDialog(view, "Peça não encontrada");
-                return;
-            }
-            while (res.next()){
-                String marca = res.getString("marca");
-                String desc = res.getString("descricao");
-                String preco = res.getString("preço");
-                
-                texto.append("Marca: ").append(marca).append("   Descrição: ")
-                        .append(desc).append("   Preço: ").append(preco)
-                        .append("\n\n");
-                view.getTxtResul().setText(texto.toString());
-            }
-        }
-        catch(SQLException e){
-            JOptionPane.showMessageDialog(view, e);
-        }
-    }
-    
-    public void pesquisaM(){
-        Conexao conexao = new Conexao();
-        try{
-            Connection conn = conexao.getConnection();
-            EstoqueDAO dao = new EstoqueDAO(conn);
-            ResultSet res = dao.consultarMarca(view.getTxtMarca().getText());
-            StringBuilder texto = new StringBuilder(); 
-            if (!res.isBeforeFirst()) { 
-                JOptionPane.showMessageDialog(view, "Marca não encontrada");
+                JOptionPane.showMessageDialog(view, "Peça e/ou marca não encontrada");
                 return;
             }
             while (res.next()){
