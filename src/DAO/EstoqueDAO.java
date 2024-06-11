@@ -17,11 +17,26 @@ public class EstoqueDAO {
         this.conn = conn;
     }
     
-    public ResultSet consultar(Roupa roupa) throws SQLException{
-        String sql = "select * from estoque where marca = ? and descricao = ?";
+    public ResultSet consultar(String marca, String desc) throws SQLException {
+        String sql = "SELECT * FROM estoque WHERE LOWER(marca) LIKE ? AND LOWER(descricao) LIKE ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, "%" + marca.toLowerCase() + "%");
+        stmt.setString(2, "%" + desc.toLowerCase() + "%");
+        return stmt.executeQuery();
+    }
+    
+    public ResultSet consultarTodos() throws SQLException{
+        String sql = "select * from estoque";
         PreparedStatement statement = conn.prepareStatement(sql);
-        statement.setString(1, roupa.getMarca());
-        statement.setString(2, roupa.getDescricao());
+        statement.execute();
+        ResultSet resul = statement.getResultSet();
+        return resul;
+    }
+    
+    public ResultSet consultarMarca(String marca) throws SQLException{
+        String sql = "SELECT * FROM estoque WHERE LOWER(marca) LIKE ?";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setString(1, "%" + marca.toLowerCase() + "%");
         statement.execute();
         ResultSet resul = statement.getResultSet();
         return resul;
